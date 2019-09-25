@@ -34,6 +34,14 @@ def get_cards(num_decks):
 
     return card_list
 
+def get_cval(cardv):
+    if cardv == "J" or cardv == "Q" or cardv == "K":
+        return 10
+    elif cardv == "A":
+        return 11
+    else:
+        return int(cardv)
+
 def get_odds(cards):
     odds_pct = {};
     card_val = cards[0][0];

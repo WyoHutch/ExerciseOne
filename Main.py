@@ -7,8 +7,6 @@ from tkinter import ttk
 
 card_num = 0;
 card_deck = [];
-hit_num = 0;
-cards_inhand = {}
 
 class Player:
     def __init__(self, num_cards=0, num_aces=0, tot_hand=0):
@@ -47,89 +45,171 @@ def get_card():
     card_suit = card[-1]
     return card_val, card_suit
 
-def get_cval(cardv):
-    if cardv == "J" or cardv == "Q" or cardv == "K":
-        return 10
-    elif cardv == "A":
-        return 11
-    else:
-        return int(cardv)
-
-
 def deal_cards():
+    global amt_chips;
     num_plyr = int(num_players.get())
+    dlr_CS1 = "X";
+    dlr_CS2 = "X";
+    amt_txt = amt_chips.get();
+    amt_txt2 = amt_txt[1:];
+    amtVal = int(amt_txt2);
+    amtNew = amtVal - 10;
+    amt_chips = "$" + str(amtNew);
+    # amt_chips -= "$" + str(int(amt_txt[1:]) - 10);
     for i in range(3 + 2 * num_plyr):
         card_val, card_suit = get_card();
         if i == 0:
-            user_CS1.set(card_val);
-            user_CS2.set(card_suit);
-            num_A = 1 if card_val = "A" else num_A = 0
-            Player1 = Player(1, num_A, get_cval(card_val))
-        elif i == 1:
-            user_CS3.set(card_val);
-            user_CS4.set(card_suit);
-            num_A = 1 if card_val = "A" else num_A = 0
-            Player1.num_cards = 2;
-            Player1.num_aces += num_A;
-            Player1.tot_hand += get_cval(card_val)
-        elif i == 2:
-            dlr_CS1.set("X");
-            dlr_CS2.set("X");
-        elif i == 3:
             dlr_CS3.set(card_val);
             dlr_CS4.set(card_suit);
-            num_A = 1 if card_val = "A" else num_A = 0
-            Player0 = Player(1, num_A, get_cval(card_val))
+            if (card_val == "A"):
+                num_A = 1
+            else:
+                num_A = 0
+            Player0 = Player(1, num_A, CardFuncs.get_cval(card_val))
+        elif i == 1:
+            user_CS1.set(card_val);
+            user_CS2.set(card_suit);
+            if (card_val == "A"):
+                num_A = 1
+            else:
+                num_A = 0
+            Player1 = Player(1, num_A, CardFuncs.get_cval(card_val))
+        elif i == 2:
+            user_CS3.set(card_val);
+            user_CS4.set(card_suit);
+            if (card_val == "A"):
+                num_A = 1
+            else:
+                num_A = 0
+            Player1.num_cards = 2;
+            Player1.num_aces += num_A;
+            Player1.tot_hand += CardFuncs.get_cval(card_val)
         if num_plyr == 0:
             continue
-        elif i == 4:
+        elif i == 3:
             plA_CS1.set(card_val);
             plA_CS2.set(card_suit);
-            num_A = 1 if card_val = "A" else num_A = 0
-            Player2 = Player(1, num_A, get_cval(card_val))
-        elif i == 5:
+            if (card_val == "A"):
+                num_A = 1
+            else:
+                num_A = 0
+            Player2 = Player(1, num_A, CardFuncs.get_cval(card_val))
+        elif i == 4:
             plA_CS3.set(card_val);
             plA_CS4.set(card_suit);
-            num_A = 1 if card_val = "A" else num_A = 0
+            if (card_val == "A"):
+                num_A = 1
+            else:
+                num_A = 0
             Player2.num_cards = 2;
             Player2.num_aces += num_A;
-            Player2.tot_hand += get_cval(card_val)
+            Player2.tot_hand += CardFuncs.get_cval(card_val)
         if num_plyr == 1:
             continue
-        elif i == 6:
+        elif i == 5:
             plB_CS1.set(card_val);
             plB_CS2.set(card_suit);
-            num_A = 1 if card_val = "A" else num_A = 0
-            Player3 = Player(1, num_A, get_cval(card_val))
-        elif i == 7:
+            if (card_val == "A"):
+                num_A = 1
+            else:
+                num_A = 0
+            Player3 = Player(1, num_A, CardFuncs.get_cval(card_val))
+        elif i == 6:
             plB_CS3.set(card_val);
             plB_CS4.set(card_suit);
             Player3.num_cards = 2;
             Player3.num_aces += num_A;
-            Player3.tot_hand += get_cval(card_val)
+            Player3.tot_hand += CardFuncs.get_cval(card_val)
 def hit():
-    global hit_num;
     card_val, card_suit = get_card()
-    if hit_num == 0:
+    if Player1.num_cards == 2:
         user_CS5.set(card_val);
         user_CS6.set(card_suit)
-        hit_num += 1;
-    if hit_num == 1:
+        user.num_cards = 3;
+        user.tot_hand += CardFuncs.get_cval(card_val)
+    if Player1.num_cards == 3:
         user_CS7.set(card_val);
         user_CS8.set(card_suit)
+        user.num_cards = 4;
+        user.tot_hand += CardFuncs.get_cval(card_val)
 
-def hand_tot(plyr):
-    if plyr == 0:
-        pl_hand = "dlr_CS";
-    elif plyr == 1:
-        pl_hand = "user_CS";
-    elif plyr == 2:
-        pl_hand = "plA_CS";
-    elif plyr == 3:
-        pl_hand = "plB_CS";
+def plr1_hit():
+    while num_plyr >= 1 and Player2.tot_hand < 16:
+        card_val, card_suit = get_card()
+        if Player2.num_cards == 2:
+            plA_CS5.set(card_val);
+            plA_CS6.set(card_suit);
+            Player2.num_cards = 3;
+            Player2.tot_hand += CardFuncs.get_cval(card_val)
+        if Player2.num_cards == 3:
+            plA_CS7.set(card_val);
+            plA_CS8.set(card_suit)
+            Player2.num_cards = 4;
+            Player2.tot_hand += CardFuncs.get_cval(card_val)
+
+def plr2_hit():
+    while num_plyr >= 2 and Player3.tot_hand < 16:
+        card_val, card_suit = get_card()
+        if Player3.num_cards == 2:
+            plB_CS5.set(card_val);
+            plB_CS6.set(card_suit);
+            Player3.num_cards = 3;
+            Player3.tot_hand += CardFuncs.get_cval(card_val)
+        if Player2.num_cards == 3:
+            plB_CS7.set(card_val);
+            plB_CS8.set(card_suit)
+            Player3.num_cards = 4;
+            Player3.tot_hand += CardFuncs.get_cval(card_val)
+
+def plr3_hit():
+    while num_plyr == 3 and Player4.tot_hand < 16:
+        card_val, card_suit = get_card()
+        if Player4.num_cards == 2:
+            plA_CS5.set(card_val);
+            plA_CS6.set(card_suit);
+            Player4.num_cards = 3;
+            Player4.tot_hand += CardFuncs.get_cval(card_val)
+        if Player4.num_cards == 3:
+            plA_CS7.set(card_val);
+            plA_CS8.set(card_suit)
+            Player4.num_cards = 4;
+            Player4.tot_hand += CardFuncs.get_cval(card_val)
+
+def dlr_play ():
+    card_val, card_suit = get_card();
+    dlr_CS1 = card_val;
+    dlr_CS2 = card_suit;
+    if (card_val == "A"):
+        num_A = 1
     else:
-        pl_hand = "plC_CS";
-    
+        num_A = 0
+    Player0.num_cards = 2;
+    Player0.num_aces += num_A;
+    Player0.tot_hand += get_cval(card_val)
+    while Player0.tot_hand < 16:
+        card_val, card_suit = get_card()
+        if Player0.num_cards == 2:
+            dlr_CS5 = card_val;
+            dlr_CS6 = card_suit;
+            Player0.num_cards = 3;
+            Player0.tot_hand += get_cval(card_val)
+        if Player4.num_cards == 3:
+            dlr_CS7 = card_val;
+            dlr_CS8 = card_suit
+            Player0.num_cards = 4;
+            Player0.tot_hand += get_cval(card_val)
+    hand_comp = Player0.tot_hand - Player1.tot_hand;
+    if hand_comp > 0:
+        print("Dealer wins")
+    elif hand_comp == 0:
+        print("Push from dealer");
+        amt_txt = amt_chips.get();
+        amt_chips -= "$" + str(int(amt_txt[1:]) + 10);
+    else:
+        print("Player wins");
+        amt_txt = amt_chips.get();
+        amt_chips -= "$" + str(int(amt_txt[1:]) + 20);
+
 
 root = Tk()
 root.title("Casino BlackJack Odds")
@@ -196,43 +276,46 @@ ttk.Label(mainframe, width=3, justify=LEFT, textvariable=user_CS6).grid(column=8
 ttk.Label(mainframe, width=3, justify=RIGHT, textvariable=user_CS7).grid(column=9, row=28, padx=0, sticky=E)
 ttk.Label(mainframe, width=3, justify=LEFT, textvariable=user_CS8).grid(column=10, row=28, padx=0, sticky=W)
 
-if int(num_players.get()) > 0:
-    plA_CS1 = StringVar();
-    plA_CS2 = StringVar();
-    plA_CS3 = StringVar();
-    plA_CS4 = StringVar();
-    plA_CS5 = StringVar();
-    plA_CS6 = StringVar();
-    plA_CS7 = StringVar();
-    plA_CS8 = StringVar();
-    ttk.Label(mainframe, text="Player A").grid(column=6, columnspan=2,  row=4, sticky=N)
-    ttk.Label(mainframe, width=3, justify=RIGHT, textvariable=plA_CS1).grid(column=6, row=5, sticky=W)
-    ttk.Label(mainframe, width=3, justify=LEFT, textvariable=plA_CS2).grid(column=6, row=5, sticky=E)
-    ttk.Label(mainframe, width=3, justify=RIGHT, textvariable=plA_CS3).grid(column=6, row=6, sticky=W)
-    ttk.Label(mainframe, width=3, justify=LEFT, textvariable=plA_CS4).grid(column=6, row=6, sticky=E)
-    ttk.Label(mainframe, width=3, justify=RIGHT, textvariable=plA_CS5).grid(column=6, row=7, sticky=W)
-    ttk.Label(mainframe, width=3, justify=LEFT, textvariable=plA_CS6).grid(column=6, row=7, sticky=E)
-    ttk.Label(mainframe, width=3, justify=RIGHT, textvariable=plA_CS7).grid(column=6, row=8, sticky=W)
-    ttk.Label(mainframe, width=3, justify=LEFT, textvariable=plA_CS8).grid(column=6, row=8, sticky=E)
+amt_chips = StringVar();
+ttk.Label(mainframe, textvariable=amt_chips).grid(column=3, row=32, sticky=W)
+ttk.Label(mainframe, text="Amount in Player chips:  $").grid(column=0, row=30, sticky=W)
+amt_chips.set("$100")
 
-if int(num_players.get()) > 1:
-    plB_CS1 = StringVar();
-    plB_CS2 = StringVar();
-    plB_CS3 = StringVar();
-    plB_CS4 = StringVar();
-    plB_CS5 = StringVar();
-    plB_CS6 = StringVar();
-    plB_CS7 = StringVar();
-    plB_CS8 = StringVar();
-    ttk.Label(mainframe, text="Player B").grid(column=9, columnspan=2,  row=4, sticky=N)
-    ttk.Label(mainframe, width=2, justify=RIGHT, textvariable=plB_CS1).grid(column=8, row=5, sticky=W)
-    ttk.Label(mainframe, width=2, justify=LEFT, textvariable=plB_CS2).grid(column=8, row=5, sticky=E)
-    ttk.Label(mainframe, width=2, justify=RIGHT, textvariable=plB_CS3).grid(column=8, row=6, sticky=W)
-    ttk.Label(mainframe, width=2, justify=LEFT, textvariable=plB_CS4).grid(column=8, row=6, sticky=E)
-    ttk.Label(mainframe, width=2, justify=RIGHT, textvariable=plB_CS5).grid(column=8, row=7, sticky=W)
-    ttk.Label(mainframe, width=2, justify=LEFT, textvariable=plB_CS6).grid(column=8, row=7, sticky=E)
-    ttk.Label(mainframe, width=2, justify=RIGHT, textvariable=plB_CS7).grid(column=8, row=8, sticky=W)
-    ttk.Label(mainframe, width=2, justify=LEFT, textvariable=plB_CS8).grid(column=8, row=8, sticky=E)
+plA_CS1 = StringVar();
+plA_CS2 = StringVar();
+plA_CS3 = StringVar();
+plA_CS4 = StringVar();
+plA_CS5 = StringVar();
+plA_CS6 = StringVar();
+plA_CS7 = StringVar();
+plA_CS8 = StringVar();
+ttk.Label(mainframe, text="Player A").grid(column=6, columnspan=2,  row=4, sticky=N)
+ttk.Label(mainframe, width=3, justify=RIGHT, textvariable=plA_CS1).grid(column=6, row=5, sticky=W)
+ttk.Label(mainframe, width=3, justify=LEFT, textvariable=plA_CS2).grid(column=6, row=5, sticky=E)
+ttk.Label(mainframe, width=3, justify=RIGHT, textvariable=plA_CS3).grid(column=6, row=6, sticky=W)
+ttk.Label(mainframe, width=3, justify=LEFT, textvariable=plA_CS4).grid(column=6, row=6, sticky=E)
+ttk.Label(mainframe, width=3, justify=RIGHT, textvariable=plA_CS5).grid(column=6, row=7, sticky=W)
+ttk.Label(mainframe, width=3, justify=LEFT, textvariable=plA_CS6).grid(column=6, row=7, sticky=E)
+ttk.Label(mainframe, width=3, justify=RIGHT, textvariable=plA_CS7).grid(column=6, row=8, sticky=W)
+ttk.Label(mainframe, width=3, justify=LEFT, textvariable=plA_CS8).grid(column=6, row=8, sticky=E)
+
+plB_CS1 = StringVar();
+plB_CS2 = StringVar();
+plB_CS3 = StringVar();
+plB_CS4 = StringVar();
+plB_CS5 = StringVar();
+plB_CS6 = StringVar();
+plB_CS7 = StringVar();
+plB_CS8 = StringVar();
+ttk.Label(mainframe, text="Player B").grid(column=9, columnspan=2,  row=4, sticky=N)
+ttk.Label(mainframe, width=2, justify=RIGHT, textvariable=plB_CS1).grid(column=8, row=5, sticky=W)
+ttk.Label(mainframe, width=2, justify=LEFT, textvariable=plB_CS2).grid(column=8, row=5, sticky=E)
+ttk.Label(mainframe, width=2, justify=RIGHT, textvariable=plB_CS3).grid(column=8, row=6, sticky=W)
+ttk.Label(mainframe, width=2, justify=LEFT, textvariable=plB_CS4).grid(column=8, row=6, sticky=E)
+ttk.Label(mainframe, width=2, justify=RIGHT, textvariable=plB_CS5).grid(column=8, row=7, sticky=W)
+ttk.Label(mainframe, width=2, justify=LEFT, textvariable=plB_CS6).grid(column=8, row=7, sticky=E)
+ttk.Label(mainframe, width=2, justify=RIGHT, textvariable=plB_CS7).grid(column=8, row=8, sticky=W)
+ttk.Label(mainframe, width=2, justify=LEFT, textvariable=plB_CS8).grid(column=8, row=8, sticky=E)
 
 
 for child in mainframe.winfo_children(): child.grid_configure(padx=1, pady=5)
