@@ -1,7 +1,5 @@
 import operator
 
-num_decks = 4;
-
 def get_cards(num_decks):
     suits = ["C", "D", "H", "S"];
     face_cards = ["B", "J", "Q", "T", "Z"];
@@ -42,37 +40,24 @@ def get_cval(cardv):
     else:
         return int(cardv)
 
-def get_odds(cards):
+def get_odds(cards, hand_tot):
     odds_pct = {};
-    card_val = cards[0][0];
-    val_cnt = 0;
-    ones_cnt = 0;
-    tens_cnt = 0;
+    for i in range(1, 12):
+        odds_pct[i] = 0
+    print(len(cards))
     for i in range(len(cards)):
-        card_rank = cards[i][0];
-        if card_rank == "1":
-            tens_cnt += 1
-        if card_rank == "J" or card_rank == "Q" or card_rank == "K":
-            tens_cnt += 1
-        if card_rank == "A":
-            ones_cnt += 1
-        if card_rank == card_val:
-            val_cnt += 1
+        if len(cards[i]) == 3:
+            card_val = cards[i][:2]
         else:
-            odds_pct[card_val] = val_cnt/len(cards) * 100;
-            card_val = card_rank;
-            val_cnt = 1;
-        odds_pct[card_val] = val_cnt/len(cards) * 100
+            card_val = cards[i][0]
+        odds_pct[get_cval(card_val)] += 1
+    odds_pct[1] = odds_pct[11]
+    # odds_pct_sort = sorted(odds_pct.items(), key = operator.itemgetter(1), reverse = True)
+    # odds_sort = {}
+    # for keys in odds_pct_sort:
+    #     odds_sort[keys[0]] = keys[1]
+    return odds_pct
 
-    odds_pct.pop("J");
-    odds_pct.pop("Q");
-    odds_pct.pop("K");
-    odds_pct["1"] = odds_pct["A"];
-    odds_pct["10"] = tens_cnt/len(cards) * 100;
-    odds_pct["11"] = odds_pct["A"];
-    odds_pct.pop("A");
-    odds_pct_sort = sorted(odds_pct.items(), key = operator.itemgetter(1), reverse = True)
-    odds_sort = {}
-    for keys in odds_pct_sort:
-        odds_sort[keys[0]] = keys[1]
-    return odds_sort
+decks = get_cards(3)
+odds_ret = get_odds(decks, 15)
+print(odds_ret)
