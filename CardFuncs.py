@@ -40,7 +40,7 @@ def get_cval(cardv):
     else:
         return int(cardv)
 
-def get_odds(cards, hand_tot):
+def get_odds(cards):
     odds_pct = {};
     for i in range(1, 12):
         odds_pct[i] = 0
@@ -52,12 +52,5 @@ def get_odds(cards, hand_tot):
             card_val = cards[i][0]
         odds_pct[get_cval(card_val)] += 1
     odds_pct[1] = odds_pct[11]
-    # odds_pct_sort = sorted(odds_pct.items(), key = operator.itemgetter(1), reverse = True)
-    # odds_sort = {}
-    # for keys in odds_pct_sort:
-    #     odds_sort[keys[0]] = keys[1]
     return odds_pct
 
-decks = get_cards(3)
-odds_ret = get_odds(decks, 15)
-print(odds_ret)
