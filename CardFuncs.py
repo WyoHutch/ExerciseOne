@@ -44,7 +44,6 @@ def get_odds(cards):
     odds_pct = {};
     for i in range(1, 12):
         odds_pct[i] = 0
-    print(len(cards))
     for i in range(len(cards)):
         if len(cards[i]) == 3:
             card_val = cards[i][:2]

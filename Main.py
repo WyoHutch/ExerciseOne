@@ -7,47 +7,35 @@ from tkinter import ttk
 
 num_cards = 0;
 card_deck = [];
-amt_chips = "$100";
-num_cards = 0;
-card_deck = [];
 
 class Player:
     def __init__(self, num_cards=0, num_aces=0, tot_hand=0, arrCard = []):
         self.num_cards = num_cards;
         self.num_aces = num_aces;
-        self.tot_hand = tot_hand
+        self.arrCard = arrCard
     def handtot(self):
-        if self.num_aces > 0:
-            if self.tot_hand > 21:
-                self.tot_hand = self.tot_hand - 10;
-                self.num_aces = self.num_aces - 1
+        total = 0;
+        tot_A = 0;
+        for i in self.arrCard:
+            if i == 11: tot_A += 1
+            total += i
+        while total > 21 and tot_A > 0:
+            total -= 10
+            tot_A -= 1
+        return total
 
 def clr_msg():
     global num_plyr
-    Player0.num_cards = 0
-    Player0.num_aces = 0
-    Player0.tot_hand = 0
-    Player0.arrCard = []
-    Player1.num_cards = 0
-    Player1.num_aces = 0
-    Player1.tot_hand = 0
-    Player1.arrCard = []
-    if num_plyr >= 1:
-        Player2.num_cards = 0
-        Player2.num_aces = 0
-        Player2.tot_hand = 0
-        Player2.arrCard = []
-    if num_plyr >= 2:
-        Player3.num_cards = 0
-        Player3.num_aces = 0
-        Player3.tot_hand = 0
-        Player3.arrCard = []
-    if num_plyr == 3:
-        Player4.num_cards = 0
-        Player4.num_aces = 0
-        Player4.tot_hand = 0
-        Player4.arrCard = []
     dlr_score.set("")
+    user_score.set("")
+    # plA_text.set("")
+    # plB_text.set("")
+    # plC_text.set("")
+    plA_score.set("")
+    plB_score.set("")
+    plC_score.set("")
+    odds_win.set("")
+    odds_bust.set("")
     for i in range(1, 5) :
         globals()['dlr_CS%s' % i].set("")
         globals()['user_CS%s' % i].set("")
@@ -57,24 +45,16 @@ def clr_msg():
     for i in range(1, 7) :
         globals()['odds_num%s' % i].set("")
         globals()['odds_per%s' % i].set("")
-    user_score.set("")
-    plA_score.set("")
-    plB_score.set("")
-    plC_score.set("")
-    odds_win.set("")
-    odds_bust.set("")
+
 
 def shuffle():
     global card_deck;
     global num_cards;
+    clr_msg();
     num_plyr = int(num_players.get())
-    plA_text.set("")
-    plB_text.set("")
-    plC_text.set("")
     if num_plyr >= 1: plA_text.set("Player A")
     if num_plyr >= 2: plB_text.set("Player B")
     if num_plyr == 3: plC_text.set("Player C")
-    clr_msg();
     card_deck = CardFuncs.get_cards(int(num_decks.get()));
     num_cards = int(num_decks.get()) * 52
 
@@ -104,6 +84,24 @@ def deal_cards():
     global Player3;
     global Player4;
     global num_plyr;
+    Player0.num_cards = 0
+    Player0.num_aces = 0
+    Player0.arrCard = []
+    Player1.num_cards = 0
+    Player1.num_aces = 0
+    Player1.arrCard = []
+    if num_plyr >= 1:
+        Player2.num_cards = 0
+        Player2.num_aces = 0
+        Player2.arrCard = []
+    if num_plyr >= 2:
+        Player3.num_cards = 0
+        Player3.num_aces = 0
+        Player3.arrCard = []
+    if num_plyr == 3:
+        Player4.num_cards = 0
+        Player4.num_aces = 0
+        Player4.arrCard = []
 
     clr_msg();
     if num_cards < (2 + num_plyr) * 4:
@@ -116,134 +114,55 @@ def deal_cards():
         card_val, card_suit = get_card();
         if i == 0:
             dlr_CS2.set(card_val + card_suit);
-            if (card_val == "A"):
-                num_A = 1
-            else:
-                num_A = 0
             Player0.num_cards = 1;
-            Player0.num_aces = num_A;
-            c_value = CardFuncs.get_cval(card_val)
-            Player0.tot_hand = c_value
-            Player0.arrCard.append(c_value)
+            Player0.arrCard.append(CardFuncs.get_cval(card_val))
         elif i == 1:
             user_CS1.set(card_val + card_suit);
-            # user_CS1 = card_val + card_suit;
-            if (card_val == "A"):
-                num_A = 1
-            else:
-                num_A = 0
-            Player1.num_aces = num_A;
-            c_value = CardFuncs.get_cval(card_val)
-            Player1.tot_hand = c_value
-            Player1.arrCard.append(c_value)
+            Player1.arrCard.append(CardFuncs.get_cval(card_val))
         elif i == 2:
             user_CS2.set(card_val + card_suit);
-            # user_CS2 = card_val + card_suit;
-            if (card_val == "A"):
-                num_A = 1
-            else:
-                num_A = 0
             Player1.num_cards = 2;
-            Player1.num_aces += num_A;
-            c_value = CardFuncs.get_cval(card_val)
-            Player1.tot_hand += c_value
-            Player1.arrCard.append(c_value)
+            Player1.arrCard.append(CardFuncs.get_cval(card_val))
         if num_plyr == 0:
             continue
         elif i == 3:
             plA_CS1.set(card_val + card_suit);
-            # plA_CS1 = card_val + card_suit;
-            if (card_val == "A"):
-                num_A = 1
-            else:
-                num_A = 0
-            Player2.num_aces = num_A;
-            c_value = CardFuncs.get_cval(card_val)
-            Player2.tot_hand = c_value
-            Player2.arrCard.append(c_value)
+            Player2.arrCard.append(CardFuncs.get_cval(card_val))
         elif i == 4:
             plA_CS2.set(card_val + card_suit);
-            # plA_CS2 = card_val + card_suit;
-            if (card_val == "A"):
-                num_A = 1
-            else:
-                num_A = 0
             Player2.num_cards = 2;
-            Player2.num_aces += num_A;
-            c_value = CardFuncs.get_cval(card_val)
-            Player2.tot_hand += c_value
-            Player2.arrCard.append(c_value)
+            Player2.arrCard.append(CardFuncs.get_cval(card_val))
         if num_plyr == 1:
             continue
         elif i == 5:
             plB_CS1.set(card_val + card_suit);
-            # plB_CS1 = card_val + card_suit;
-            if (card_val == "A"):
-                num_A = 1
-            else:
-                num_A = 0
-            Player3.num_aces = num_A;
-            c_value = CardFuncs.get_cval(card_val)
-            Player3.tot_hand = c_value
-            Player3.arrCard.append(c_value)
+            Player3.arrCard.append(CardFuncs.get_cval(card_val))
         elif i == 6:
             plB_CS2.set(card_val + card_suit);
-            # plB_CS2 = card_val + card_suit;
             Player3.num_cards = 2;
-            Player3.num_aces += num_A;
-            c_value = CardFuncs.get_cval(card_val)
-            Player3.tot_hand += c_value
-            Player3.arrCard.append(c_value)
+            Player3.arrCard.append(CardFuncs.get_cval(card_val))
         if num_plyr == 2:
             continue
         elif i == 7:
             plC_CS1.set(card_val + card_suit);
-            # plC_CS1 = card_val + card_suit;
-            if (card_val == "A"):
-                num_A = 1
-            else:
-                num_A = 0
-            Player4.num_aces = num_A;
-            c_value = CardFuncs.get_cval(card_val)
-            Player4.tot_hand = c_value
-            Player4.arrCard.append(c_value)
+            Player4.arrCard.append(CardFuncs.get_cval(card_val))
         elif i == 8:
             plC_CS2.set(card_val + card_suit);
-            # plC_CS2 = card_val + card_suit;
             Player4.num_cards = 2;
-            Player4.num_aces += num_A;
-            c_value = CardFuncs.get_cval(card_val)
-            Player4.tot_hand += c_value
-            Player4.arrCard.append(c_value)
+            Player4.arrCard.append(CardFuncs.get_cval(card_val))
 
 def hit():
     global Player1;
     card_val, card_suit = get_card()
     if Player1.num_cards == 3:
         user_CS4.set(card_val + card_suit);
-        # user_CS4 = card_val + card_suit;
-        if (card_val == "A"):
-            num_A = 1
-        else:
-            num_A = 0
         Player1.num_cards = 4;
-        if num_A ==1: Player1.num_aces += 1
-        c_value = CardFuncs.get_cval(card_val)
-        Player1.tot_hand += c_value
-        Player1.arrCard.append(c_value)
+        Player1.arrCard.append(CardFuncs.get_cval(card_val))
     if Player1.num_cards == 2:
         user_CS3.set(card_val + card_suit);
-        # user_CS3 = card_val + card_suit;
-        if (card_val == "A"):
-            num_A = 1
-        else:
-            num_A = 0
         Player1.num_cards = 3;
-        if num_A ==1: Player1.num_aces += 1
-        c_value = CardFuncs.get_cval(card_val)
-        Player1.tot_hand += c_value
-        Player1.arrCard.append(c_value)
-    if Player1.tot_hand > 21:
+        Player1.arrCard.append(CardFuncs.get_cval(card_val))
+    if Player1.handtot() > 21:
         user_score.set("BUSTED")
 
 def plyr_cont():
@@ -258,144 +177,76 @@ def plyr_cont():
 def plr1_hit():
     global Player2;
     plyr_cnum = 3;
-    while Player2.tot_hand < 16:
+    while Player2.handtot() < 16:
         card_val, card_suit = get_card()
         if plyr_cnum == 4:
             plA_CS4.set(card_val + card_suit);
-            # plB_CS3 = card_val + card_suit;
-            if (card_val == "A"):
-                num_A = 1
-            else:
-                num_A = 0
             Player2.num_cards = 4;
-            if num_A ==1: Player2.num_aces += 1
-            c_value = CardFuncs.get_cval(card_val)
-            Player2.tot_hand += c_value
             Player2.arrCard.append(c_value)
-            break;
+            return
         if plyr_cnum == 3:
             plA_CS3.set(card_val + card_suit);
-            # plB_CS4 = card_val + card_suit;
-            if (card_val == "A"):
-                num_A = 1
-            else:
-                num_A = 0
             Player2.num_cards = 3;
-            if num_A ==1: Player2.num_aces += 1
-            c_value = CardFuncs.get_cval(card_val)
-            Player2.tot_hand += c_value
             Player2.arrCard.append(c_value)
             plyr_cnum = 4;
-    if Player2.tot_hand > 21:
+    if Player2.handtot() > 21:
         plA_score.set("BUST")
 
 def plr2_hit():
     global Player3;
     plyr_cnum = 3;
-    while Player3.tot_hand < 16:
+    while Player3.handtot() < 16:
         card_val, card_suit = get_card()
         if plyr_cnum == 4:
             plB_CS4.set(card_val + card_suit);
-            # plB_CS3 = card_val + card_suit;
-            if (card_val == "A"):
-                num_A = 1
-            else:
-                num_A = 0
             Player3.num_cards = 4;
-            if num_A ==1: Player3.num_aces += 1
-            c_value = CardFuncs.get_cval(card_val)
-            Player3.tot_hand += c_value
-            Player3.arrCard.append(c_value)
-            break;
+            Player3.arrCard.append(CardFuncs.get_cval(card_val))
+            return
         if plyr_cnum == 3:
             plB_CS3.set(card_val + card_suit);
-            # plB_CS4 = card_val + card_suit;
-            if (card_val == "A"):
-                num_A = 1
-            else:
-                num_A = 0
             Player3.num_cards = 3;
-            if num_A ==1: Player3.num_aces += 1
-            c_value = CardFuncs.get_cval(card_val)
-            Player3.tot_hand += c_value
-            Player3.arrCard.append(c_value)
+            Player3.arrCard.append(CardFuncs.get_cval(card_val))
             plyr_cnum = 4;
-    if Player3.tot_hand > 21:
+    if Player3.handtot() > 21:
         plB_score.set("BUST")
 
 def plr3_hit():
     global Player4;
     plyr_cnum = 3;
-    while Player4.tot_hand < 16:
+    while Player4.handtot() < 16:
         card_val, card_suit = get_card()
         if plyr_cnum == 4:
             plC_CS4.set(card_val + card_suit);
-            # plB_CS3 = card_val + card_suit;
-            if (card_val == "A"):
-                num_A = 1
-            else:
-                num_A = 0
             Player4.num_cards = 4;
-            if num_A ==1: Player4.num_aces += 1
-            c_value = CardFuncs.get_cval(card_val)
-            Player4.tot_hand += c_value
-            Player4.arrCard.append(c_value)
-            break;
+            Player4.arrCard.append(CardFuncs.get_cval(card_val))
+            return
         if plyr_cnum == 3:
             plC_CS3.set(card_val + card_suit);
-            # plB_CS4 = card_val + card_suit;
-            if (card_val == "A"):
-                num_A = 1
-            else:
-                num_A = 0
             Player4.num_cards = 3;
-            if num_A ==1: Player4.num_aces += 1
-            c_value = CardFuncs.get_cval(card_val)
-            Player4.tot_hand += c_value
-            Player4.arrCard.append(c_value)
+            Player4.arrCard.append(CardFuncs.get_cval(card_val))
             plyr_cnum = 4;
-    if Player4.tot_hand > 21:
+    if Player4.handtot() > 21:
         plC_score.set("BUST")
 
 def dlr_play ():
     global Player0;
     card_val, card_suit = get_card();
     dlr_CS1.set(card_val + card_suit);
-    if (card_val == "A"):
-        num_A = 1
-    else:
-        num_A = 0
     Player0.num_cards = 2;
-    Player0.num_aces += num_A;
-    c_value = CardFuncs.get_cval(card_val)
-    Player0.tot_hand += c_value
-    Player0.arrCard.append(c_value)
-    while Player0.tot_hand < 16:
+    Player0.arrCard.append(CardFuncs.get_cval(card_val))
+    while Player0.handtot() < 16:
         card_val, card_suit = get_card()
         if Player0.num_cards == 3:
             dlr_CS4.set(card_val + card_suit);
-            if (card_val == "A"):
-                num_A = 1
-            else:
-                num_A = 0
             Player0.num_cards = 4;
-            if num_A ==1: Player0.num_aces += 1
-            c_value = CardFuncs.get_cval(card_val)
-            Player0.tot_hand += c_value
-            Player0.arrCard.append(c_value)
+            Player0.arrCard.append(CardFuncs.get_cval(card_val))
         if Player0.num_cards == 2:
             dlr_CS3.set(card_val + card_suit);
-            if (card_val == "A"):
-                num_A = 1
-            else:
-                num_A = 0
             Player0.num_cards = 3;
-            if num_A ==1: Player0.num_aces += 1
-            c_value = CardFuncs.get_cval(card_val)
-            Player0.tot_hand += c_value
-            Player0.arrCard.append(c_value)
-    hand_comp = Player0.tot_hand - Player1.tot_hand;
-    if Player0.tot_hand > 21:
+            Player0.arrCard.append(CardFuncs.get_cval(card_val))
+    hand_comp = Player0.handtot() - Player1.handtot();
+    if Player0.handtot() > 21:
+        chip_amt(20)
         dlr_score.set("BUST - Player WINS")
     elif hand_comp == 0:
         chip_amt(10)
@@ -411,7 +262,7 @@ def get_odds():
     global card_deck;
     chip_amt(-5)
     odds_dict = CardFuncs.get_odds(card_deck)
-    hit_21 = 21 - Player1.tot_hand
+    hit_21 = 21 - Player1.handtot()
     if hit_21 > 11:
         user_score.set("No chance to BUST")
         return
@@ -433,6 +284,7 @@ def get_odds():
     if hit_21 > 2: odds_per4.set("{:5.2f}".format(100 * odds_dict[hit_21 - 2] / num_cards))
     if hit_21 > 3: odds_per5.set("{:5.2f}".format(100 * odds_dict[hit_21 - 3] / num_cards))
     if hit_21 > 4: odds_per6.set("{:5.2f}".format(100 * odds_dict[hit_21 - 4] / num_cards))
+    if odds_bust.get() == "" or odds_win.get() == "": return
     win_odds = float(odds_win.get())
     bust_odds = float(odds_bust.get())
     if abs(bust_odds - bust_per) < 5 and abs(win_odds - odds_21) < 3: chip_amt(5)
