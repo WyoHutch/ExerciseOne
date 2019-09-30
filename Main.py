@@ -182,12 +182,12 @@ def plr1_hit():
         if plyr_cnum == 4:
             plA_CS4.set(card_val + card_suit);
             Player2.num_cards = 4;
-            Player2.arrCard.append(c_value)
+            Player2.arrCard.append(CardFuncs.get_cval(card_val))
             return
         if plyr_cnum == 3:
             plA_CS3.set(card_val + card_suit);
             Player2.num_cards = 3;
-            Player2.arrCard.append(c_value)
+            Player2.arrCard.append(CardFuncs.get_cval(card_val))
             plyr_cnum = 4;
     if Player2.handtot() > 21:
         plA_score.set("BUST")
@@ -294,7 +294,7 @@ def get_odds():
 
 root = Tk()
 root.title("Casino BlackJack Odds")
-root.geometry("900x600")
+root.geometry("900x640")
 
 mainframe = ttk.Frame(root, padding="4 8 4 8")
 mainframe.grid(columnspan = 1, rowspan = 1)
@@ -328,28 +328,28 @@ dlr_CS2 = StringVar();
 dlr_CS3 = StringVar();
 dlr_CS4 = StringVar();
 dlr_score = StringVar();
-ttk.Label(mainframe, text="Dealer").grid(column=0, row=6, sticky=N)
-ttk.Label(mainframe, textvariable=dlr_CS1).grid(column=2, row=6, padx=0, sticky=W)
-ttk.Label(mainframe, textvariable=dlr_CS2).grid(column=2, row=7, padx=0, sticky=W)
-ttk.Label(mainframe, textvariable=dlr_CS3).grid(column=2, row=8, padx=0, sticky=W)
-ttk.Label(mainframe, textvariable=dlr_CS4).grid(column=2, row=9, padx=0, sticky=W)
-ttk.Label(mainframe, textvariable=dlr_score).grid(column=2, row=10, padx=0, sticky=W)
+ttk.Label(mainframe, text="Dealer", font=('Arial Bold', 14)).grid(column=0, row=6, sticky=N)
+ttk.Label(mainframe, textvariable=dlr_CS1, font=('Arial Bold', 12)).grid(column=2, row=6, padx=0, sticky=W)
+ttk.Label(mainframe, textvariable=dlr_CS2, font=('Arial Bold', 12)).grid(column=2, row=7, padx=0, sticky=W)
+ttk.Label(mainframe, textvariable=dlr_CS3, font=('Arial Bold', 12)).grid(column=2, row=8, padx=0, sticky=W)
+ttk.Label(mainframe, textvariable=dlr_CS4, font=('Arial Bold', 12)).grid(column=2, row=9, padx=0, sticky=W)
+ttk.Label(mainframe, textvariable=dlr_score, font=('Arial Bold', 14)).grid(column=2, columnspan=3, row=10, padx=0, sticky=W)
 
 user_CS1 = StringVar();
 user_CS2 = StringVar();
 user_CS3 = StringVar();
 user_CS4 = StringVar();
 user_score = StringVar();
-ttk.Label(mainframe, text="User").grid(column=5, columnspan=2, row=30, sticky=S)
-ttk.Label(mainframe, textvariable=user_CS1).grid(column=4, row=28)
-ttk.Label(mainframe, textvariable=user_CS2).grid(column=5, row=28)
-ttk.Label(mainframe, textvariable=user_CS3).grid(column=6, row=28)
-ttk.Label(mainframe, textvariable=user_CS4).grid(column=7, row=28, sticky=W)
-ttk.Label(mainframe, textvariable=user_score).grid(column=5, row=25, padx=0, sticky=S)
+ttk.Label(mainframe, text="User", font=('Arial Bold', 14)).grid(column=5, columnspan=2, row=30, sticky=S)
+ttk.Label(mainframe, textvariable=user_CS1, font=('Arial Bold', 12)).grid(column=4, row=28)
+ttk.Label(mainframe, textvariable=user_CS2, font=('Arial Bold', 12)).grid(column=5, row=28)
+ttk.Label(mainframe, textvariable=user_CS3, font=('Arial Bold', 12)).grid(column=6, row=28)
+ttk.Label(mainframe, textvariable=user_CS4, font=('Arial Bold', 12)).grid(column=7, row=28, sticky=W)
+ttk.Label(mainframe, textvariable=user_score, font=('Arial Bold', 14)).grid(column=5, columnspan=2, row=25, padx=0, sticky=S)
 
 amt_chips = StringVar();
-ttk.Label(mainframe, text="Amount in Player chips:").grid(column=0, row=35, sticky=W)
-ttk.Label(mainframe, textvariable=amt_chips).grid(column=1, row=35, sticky=W)
+ttk.Label(mainframe, text="Amount in Player chips:", font=('Arial', 12)).grid(column=0, row=35, sticky=W)
+ttk.Label(mainframe, textvariable=amt_chips, font=('Arial Bold', 12)).grid(column=1, row=35, sticky=W)
 amt_chips.set("$100")
 
 odds_bust = StringVar();
@@ -397,11 +397,11 @@ plA_CS3 = StringVar();
 plA_CS4 = StringVar();
 plA_score = StringVar();
 ttk.Label(mainframe, textvariable=plA_text).grid(column=8, row=4, sticky=N)
-ttk.Label(mainframe, textvariable=plA_CS1).grid(column=8, row=5)
-ttk.Label(mainframe, textvariable=plA_CS2).grid(column=8, row=6)
-ttk.Label(mainframe, textvariable=plA_CS3).grid(column=8, row=7)
-ttk.Label(mainframe, textvariable=plA_CS4).grid(column=8, row=8)
-ttk.Label(mainframe, textvariable=plA_score).grid(column=8, row=10, sticky=N)
+ttk.Label(mainframe, textvariable=plA_CS1, font=('Arial Bold', 12)).grid(column=8, row=5)
+ttk.Label(mainframe, textvariable=plA_CS2, font=('Arial Bold', 12)).grid(column=8, row=6)
+ttk.Label(mainframe, textvariable=plA_CS3, font=('Arial Bold', 12)).grid(column=8, row=7)
+ttk.Label(mainframe, textvariable=plA_CS4, font=('Arial Bold', 12)).grid(column=8, row=8)
+ttk.Label(mainframe, textvariable=plA_score, font=('Arial Bold', 14), foreground='#ff1000').grid(column=8, row=9, sticky=N)
 
 plB_text = StringVar();
 plB_CS1 = StringVar();
@@ -410,11 +410,11 @@ plB_CS3 = StringVar();
 plB_CS4 = StringVar();
 plB_score = StringVar();
 ttk.Label(mainframe, textvariable=plB_text).grid(column=9, row=4, sticky=N)
-ttk.Label(mainframe, textvariable=plB_CS1).grid(column=9, row=5,)
-ttk.Label(mainframe, textvariable=plB_CS2).grid(column=9, row=6,)
-ttk.Label(mainframe, textvariable=plB_CS3).grid(column=9, row=7,)
-ttk.Label(mainframe, textvariable=plB_CS4).grid(column=9, row=8,)
-ttk.Label(mainframe, textvariable=plB_score).grid(column=9, row=10, sticky=N)
+ttk.Label(mainframe, textvariable=plB_CS1, font=('Arial Bold', 12)).grid(column=9, row=5,)
+ttk.Label(mainframe, textvariable=plB_CS2, font=('Arial Bold', 12)).grid(column=9, row=6,)
+ttk.Label(mainframe, textvariable=plB_CS3, font=('Arial Bold', 12)).grid(column=9, row=7,)
+ttk.Label(mainframe, textvariable=plB_CS4, font=('Arial Bold', 12)).grid(column=9, row=8,)
+ttk.Label(mainframe, textvariable=plB_score, font=('Arial Bold', 14), foreground='#ff1000').grid(column=9, row=9, sticky=N)
 
 plC_text = StringVar();
 plC_CS1 = StringVar();
@@ -423,11 +423,11 @@ plC_CS3 = StringVar();
 plC_CS4 = StringVar();
 plC_score = StringVar();
 ttk.Label(mainframe, textvariable=plC_text).grid(column=10, row=4, sticky=N)
-ttk.Label(mainframe, textvariable=plC_CS1).grid(column=10, row=5,)
-ttk.Label(mainframe, textvariable=plC_CS2).grid(column=10, row=6,)
-ttk.Label(mainframe, textvariable=plC_CS3).grid(column=10, row=7,)
-ttk.Label(mainframe, textvariable=plC_CS4).grid(column=10, row=8,)
-ttk.Label(mainframe, textvariable=plC_score).grid(column=10, row=10, sticky=N)
+ttk.Label(mainframe, textvariable=plC_CS1, font=('Arial Bold', 12)).grid(column=10, row=5,)
+ttk.Label(mainframe, textvariable=plC_CS2, font=('Arial Bold', 12)).grid(column=10, row=6,)
+ttk.Label(mainframe, textvariable=plC_CS3, font=('Arial Bold', 12)).grid(column=10, row=7,)
+ttk.Label(mainframe, textvariable=plC_CS4, font=('Arial Bold', 12)).grid(column=10, row=8,)
+ttk.Label(mainframe, textvariable=plC_score, font=('Arial Bold', 14), foreground='#ff1000').grid(column=10, row=9, sticky=N)
 
 ttk.Label(mainframe, text="Rules of the Game").grid(column=1, columnspan=2, row=39, sticky=W)
 ttk.Label(mainframe, text="1. Shuffle required when there are less than four cards for every player at the board.").grid(column=0, columnspan=10, row=40, sticky=W)
